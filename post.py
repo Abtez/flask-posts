@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from turtle import title
+from flask import Flask, render_template, url_for
 
 app = Flask(__name__)
 
@@ -30,8 +31,13 @@ posts = [
 ]
 
 @app.route("/")
-def hello_world():
+@app.route("/home")
+def home():
     return render_template('index.html', posts=posts)
+
+@app.route("/profile")
+def profile():
+    return render_template('profile.html', title="User Profile")
 
 if __name__ == '__main__':
     app.run(debug=True)
