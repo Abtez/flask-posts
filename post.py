@@ -21,6 +21,12 @@ posts = [
         'content': 'Flask deployment',
         'date': 'May 5, 2022',
     },
+    {
+        'author': 'Student 3',
+        'title': 'Flask',
+        'content': 'Flask deployment',
+        'date': 'May 5, 2022',
+    },
 ]
 
 @app.route("/")
