@@ -5,36 +5,27 @@ from post import app, bcrypt
 from flask_login import login_user, current_user, logout_user
 
 
-posts = [
-    {
-        'author': 'Student',
-        'title': 'Flask',
-        'content': 'Flask deployment',
-        'date': 'May 5, 2022',
-    },
-    {
-        'author': 'Student 2',
-        'title': 'Flask',
-        'content': 'Flask deployment',
-        'date': 'May 5, 2022',
-    },
-    {
-        'author': 'Student 3',
-        'title': 'Flask',
-        'content': 'Flask deployment',
-        'date': 'May 5, 2022',
-    },
-
-]
-
 @app.route("/")
 @app.route("/home")
 def home():
+    posts = Post.query.all()
     return render_template('index.html', posts=posts)
 
 @app.route("/profile")
 def profile():
     return render_template('profile.html', title="User Profile")
+
+@app.route("/new/post", methods=['GET', 'POST'])
+def create():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        
+        flash('Post created Successfully', 'success')
+        return redirect(url_for('home'))
+    return render_template('create.html', title="New Post", form=form)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():

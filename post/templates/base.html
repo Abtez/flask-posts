@@ -16,7 +16,7 @@ rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css"
 rel="stylesheet"
 />
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,22 +33,46 @@ rel="stylesheet"
     {% include "nav.html" %}
 
     <div class="container">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          <div class="my-1">
-              
-              {% if messages %}
-                  {% for category, message in messages %}
-                    <div class="alert alert-{{category}}">
-                        {{ message }}
-                    </div>
-                  {% endfor %}
-              {% endif %}
-                  
-          </div>
-        {% endwith %}
+        <div class="row">
+            <div class="col-8">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                <div class="my-1">              
+                    {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="alert alert-{{category}}">
+                              {{ message }}
+                          </div>
+                        {% endfor %}
+                    {% endif %}
+            </div>
+            {% endwith %}
+
+            {% block content %}    
+            {% endblock content %}
+        </div>
+
+            <div class="col-4">
+                <div class="sidebar fixed mt-3">
+                    <h2>Our Side Nav</h2>
+                    <p>Additional information</p>
+                    <nav>
+                        <ul>
+                            <li>User1</li>
+                            <li>User2</li>
+                            <li>User3</li>
+                            <li>User4</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
     </div>
-    {% block content %}    
-    {% endblock content %}
+
+        
+                  
+        
+    
 <!-- MDB -->
 <script
 type="text/javascript"

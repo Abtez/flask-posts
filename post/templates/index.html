@@ -1,21 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
     {% for post in posts %}
-    <div class="col-md-4">
         
-        <div class="card mt-3">
-            <div class="card-header">{{ post.author }}</div>
-            <div class="card-body">
-              <h5 class="card-title">{{post.title}}</h5>
-              <p class="card-text">{{post.content}}</p>
+        <a href="">
+          <div class="card mt-3">
+            <div class="card-header">
+              <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" 
+               alt="user image"
+               height="35" 
+               width="35" 
+               class="rounded-circle"
+               >
+              <a href="" class="text-capitalize">{{ post.author.username }}</a>
             </div>
-            <div class="card-footer text-muted">{{ post.date }}/div>
+            <div class="card-body p-2">
+              <blockquote>
+                <h5 class="card-title">{{post.title}}</h5>
+              <footer><cite><p class="">{{post.content}}</p><small>
+                <div class="text-muted">{{ post.date.strftime('%d-%m-%Y') }}</div></small>
+              </cite></footer>
+              </blockquote>              
+            </div>
           </div>
+        </a>
         
-    </div>
     {% endfor %}
-</div>
 {% endblock  %}
 
