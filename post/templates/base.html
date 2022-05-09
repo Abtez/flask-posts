@@ -32,6 +32,21 @@ rel="stylesheet"
 
     {% include "nav.html" %}
 
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          <div class="my-1">
+              
+              {% if messages %}
+                  {% for category, message in messages %}
+                    <div class="alert alert-{{category}}">
+                        {{ message }}
+                    </div>
+                  {% endfor %}
+              {% endif %}
+                  
+          </div>
+        {% endwith %}
+    </div>
     {% block content %}    
     {% endblock content %}
 <!-- MDB -->
