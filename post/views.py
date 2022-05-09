@@ -1,4 +1,7 @@
-from flask import redirect, render_template, url_for, flash
+from fileinput import filename
+import secrets
+import os
+from flask import redirect, render_template, request, url_for, flash
 from .forms import *
 from .models import *
 from post import app, bcrypt
@@ -11,9 +14,33 @@ def home():
     posts = Post.query.all()
     return render_template('index.html', posts=posts)
 
-@app.route("/profile")
+def save_avatar(form_avatar):
+    random_hex = secrets.token_hex(8)
+    _, file_ext = os.path.splitext(form_avatar.filename)
+    avatar_fn = random_hex + file_ext
+    avatar_path = os.path.join(app.root_path, 'static/img', avatar_fn)
+    form_avatar.save(avatar_path)
+    return avatar_fn
+
+@app.route("/profile", methods=['GET', 'POST'])
 def profile():
-    return render_template('profile.html', title="User Profile")
+    form = UpdateProfileForm()
+    if form.validate_on_submit():
+        if form.avatar.data:
+            avatar_file = save_avatar(form.avatar.data)
+            current_user.avatar = avatar_file
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Account info has been updated', 'success')
+        return redirect(url_for('profile'))
+    
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    
+    avatar = url_for('static', filename=f'img/{current_user.avatar}')
+    return render_template('profile.html', title="User Profile", form=form, avatar=avatar)
 
 @app.route("/new/post", methods=['GET', 'POST'])
 def create():
