@@ -1,9 +1,6 @@
-from flask import Flask, render_template, url_for
-from forms import *
-
-app = Flask(__name__)
-
-app.config['SECRET_KEY'] = '123QWE'
+from flask import render_template, url_for
+from .forms import *
+from post import app
 
 posts = [
     {
@@ -45,10 +42,3 @@ def register():
 def login():
     form = LoginForm()
     return render_template('login.html', title="login", form=form)
-
-
-
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
